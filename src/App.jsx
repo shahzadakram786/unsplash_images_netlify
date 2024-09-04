@@ -1,9 +1,13 @@
-import Home from './page/home/Home'
+import Home from "./page/home/Home";
+import { ThemeProvider } from "@mui/material";
+import { theme } from "./page/home/style";
 
 const App = () => {
   return (
-    <Home />
-  )
-}
+    <ThemeProvider theme={theme}>
+      <Home />
+    </ThemeProvider>
+  );
+};
 
-export default App
+export default App;

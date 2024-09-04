@@ -1,18 +1,21 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { useRef } from "react";
 import axios from "axios";
-import { ImageList } from "@mui/material";
-// import { FormControl, TextField } from '@mui/material'
+import { useStyle } from "./style";
 
 const API_URL = "https://api.unsplash.com/search/photos";
 const Image_Per_Page = 10;
 
 const Home = () => {
-  const searchInput = useRef(null);
+  const classes = useStyle();
+
+  const searchInput = useRef("");
   const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchImages = async () => {
+    setLoading(true);
     try {
       const result = await axios.get(
         `${API_URL}?query=${
@@ -25,49 +28,71 @@ const Home = () => {
       console.log("result = > ", result.data);
     } catch (error) {
       console.error("Error fetching images:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleSearch = (event) => {
     event.preventDefault();
-    fetchImages();
+
+    const query = searchInput.current ? searchInput.current.value : "cats";
+
+    setLoading(true);
+    setTimeout(() => {
+      fetchImages(query || "cats");
+    }, 3000);
     console.log(searchInput.current.value);
   };
 
+  useEffect(() => {
+    if (searchInput.current) {
+      searchInput.current.value = "cats";
+      fetchImages("");
+    }
+  }, []);
+
   return (
     <Box
+      className={classes.BoxContainer}
       sx={{
         width: "100%",
         display: "flex",
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "red",
+        // backgroundColor: "red",
       }}
     >
       <Box
+        className={classes.BoxMainContainer}
         sx={{
-          backgroundColor: "yellow",
+          //   backgroundColor: "yellow",
           width: "80%",
           display: "flex",
+          gap: "2rem",
+          padding: "20px",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <h1>unsplash Images</h1>
-        <form onSubmit={handleSearch}>
+        <h1 className={classes.title}>unsplash Images</h1>
+        <form onSubmit={handleSearch} className={classes.form}>
           <input
             name="search"
             type="search"
             placeholder="Search images..."
             ref={searchInput}
+            className={classes.SearchInput}
           />
-          <button type="submit">Search</button>
+          <button type="submit" className={classes.Searchbutton}>
+            Search
+          </button>
         </form>
 
         <Box
-          className="images"
+          className={classes.Boximages}
           sx={{
             width: "80%",
             display: "grid",
@@ -80,6 +105,7 @@ const Home = () => {
           {images.map((image) => {
             return (
               <img
+                className={classes.images}
                 key={image.id}
                 src={image.urls.small}
                 alt={image.description}
