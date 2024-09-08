@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import { useRef } from "react";
 import axios from "axios";
 import { useStyle } from "./style";
-import { Button } from "@mui/material";
+import { Button, Skeleton } from "@mui/material";
 
 const API_URL = "https://api.unsplash.com/search/photos";
 const Image_Per_Page = 12;
@@ -16,43 +16,53 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [query, setQuery] = useState("cats");
 
   useEffect(() => {
-    if (searchInput.current) {
-      searchInput.current.value = "cats";
-      fetchImages("");
-    }
-  }, [page]);
+    fetchImages(query);
+  }, [page, query]);
 
-  const fetchImages = async () => {
+  const fetchImages = async (query) => {
     setLoading(true);
     try {
-      const result = await axios.get(
-        `${API_URL}?query=${
-          searchInput.current.value
-        }&page=${page}&per_page=${Image_Per_Page}&client_id=${
-          import.meta.env.VITE_API_KEY
-        }`
-      );
-      setImages(result.data.results);
-      setTotalPages(result.data.total_pages);
-      console.log("result = > ", result.data);
+      setTimeout(async () => {
+        const result = await axios.get(
+          `${API_URL}?query=${
+            searchInput.current.value
+          }&page=${page}&per_page=${Image_Per_Page}&client_id=${
+            import.meta.env.VITE_API_KEY
+          }`
+        );
+        setImages(result.data.results);
+        setTotalPages(result.data.total_pages);
+        setLoading(false);
+
+        // console.log("result = > ", result.data);
+      }, 2000);
     } catch (error) {
       console.error("Error fetching images:", error);
-    } finally {
       setLoading(false);
     }
   };
 
+  //   for initial images
+  useEffect(() => {
+    // Set the default value for search input and fetch initial images
+    if (searchInput.current) {
+      searchInput.current.value = query; // Set initial value to "cats"
+    }
+    fetchImages(query);
+  }, []);
+
+  //   for handle search
   const handleSearch = (event) => {
     event.preventDefault();
 
-    const query = searchInput.current ? searchInput.current.value : "cats";
-
+    const searchQuery = searchInput.current.value || "cats";
+    setQuery(searchQuery);
+    setPage(1);
     setLoading(true);
-    setTimeout(() => {
-      fetchImages(query || "cats");
-    }, 3000);
+
     console.log(searchInput.current.value);
   };
 
@@ -107,17 +117,27 @@ const Home = () => {
             justifyItems: "center",
           }}
         >
-          {images.map((image) => {
-            return (
-              <img
-                className={classes.images}
-                key={image.id}
-                src={image.urls.small}
-                alt={image.description}
-                style={{ width: "100%", height: "50vh" }}
-              />
-            );
-          })}
+          {loading
+            ? // Show skeleton loader while loading
+              Array.from(new Array(Image_Per_Page)).map((_, index) => (
+                <Skeleton
+                  variant="rectangular"
+                  width="100%"
+                  height="50vh"
+                  key={index}
+                />
+              ))
+            : images.map((image) => (
+                <a href={image.urls.small} key={image.id}>
+                  <img
+                    className={classes.images}
+                    key={image.id}
+                    src={image.urls.small}
+                    alt={image.description || "Unsplash Image"}
+                    style={{ width: "100%", height: "50vh" }}
+                  />
+                </a>
+              ))}
         </Box>
 
         <Box>
