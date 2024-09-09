@@ -1,72 +1,48 @@
-import React, { useState } from "react";
-import { Box, Button } from "@mui/material";
-import Cards from "./Cards";
-import UserData from "./data";
+import { makeStyles } from "@mui/styles";
+import { createTheme } from "@mui/material";
 
-const Search = () => {
-  const [inputData, setInputData] = useState("");
-  const [filteredData, setFilteredData] = useState(UserData);
+export const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#1976d2", // Customize primary color
+    },
+    secondary: {
+      main: "#dc004e", // Customize secondary color
+    },
+  },
+  typography: {
+    h1: {
+      fontSize: "2rem",
+      fontWeight: 600,
+      textTransform: "uppercase",
+      letterSpacing: "0.1em",
+    },
+  },
+});
 
-  const handleChange = (e) => {
-    const searchTerm = e.target.value;
-    setInputData(searchTerm);
-    filterData(searchTerm);
-  };
-
-  const filterData = (searchTerm) => {
-    const filtered = UserData.filter((value) =>
-      value.Name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredData(filtered);
-  };
-
-  const handleClick = (e) => {
-    e.preventDefault();
-    filterData(inputData);
-  };
-
-  return (
-    <Box
-      sx={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        background: "white",
-        boxShadow: "1px 2px 8px rgba(0, 0, 0, 0.1)",
-        padding: "30px",
-        borderRadius: "5px",
-      }}
-    >
-      <form style={{ display: "flex", width: "80%" }}>
-        <input
-          style={{
-            width: "100%",
-            padding: "6px",
-            background: "#F8FAFC",
-            border: "none",
-            borderRadius: "5px",
-          }}
-          onChange={handleChange}
-          type="text"
-          value={inputData}
-        />{" "}
-        <Button
-          style={{
-            background: "#10B981",
-            border: "none",
-            color: "white",
-            borderRadius: "0px 5px 5px 0",
-            padding: "10px",
-          }}
-          onClick={handleClick}
-        >
-          Search{" "}
-        </Button>{" "}
-      </form>{" "}
-      <Cards data={filteredData} />{" "}
-    </Box>
-  );
-};
-
-export default Search;
+export const useStyle = makeStyles((theme) => ({
+  title: {
+    fontSize: theme.typography.h1,
+    fontWeight: 600,
+    color: theme.palette.primary.main,
+    textTransform: "uppercase",
+    letterSpacing: "0.1em",
+  },
+  SearchInput: {
+    padding: "11px",
+    borderRadius: "5px",
+    border: "none",
+    fontSize: "16px",
+  },
+  form: {
+    display: "flex",
+    justifyContent: "space-between",
+    gap: "10px",
+    // alignItems: "center",
+    // margin: "20px 0",
+  },
+  images: {
+    borderRadius: "10px",
+    objectFit: "cover",
+  },
+}));
