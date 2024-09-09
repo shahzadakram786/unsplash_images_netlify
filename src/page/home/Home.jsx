@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import { useRef } from "react";
 import axios from "axios";
 import { useStyle } from "./style";
-import { Button, Skeleton } from "@mui/material";
+import { Button, Skeleton, Typography } from "@mui/material";
 
 const API_URL = "https://api.unsplash.com/search/photos";
 const Image_Per_Page = 12;
@@ -13,7 +13,7 @@ const Home = () => {
 
   const searchInput = useRef("");
   const [images, setImages] = useState([]);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [query, setQuery] = useState("cats");
@@ -23,25 +23,25 @@ const Home = () => {
   }, [page, query]);
 
   const fetchImages = async (query) => {
-    setLoading(true);
+    // setLoading(true);
     try {
-      setTimeout(async () => {
-        const result = await axios.get(
-          `${API_URL}?query=${
-            searchInput.current.value
-          }&page=${page}&per_page=${Image_Per_Page}&client_id=${
-            import.meta.env.VITE_API_KEY
-          }`
-        );
-        setImages(result.data.results);
-        setTotalPages(result.data.total_pages);
-        setLoading(false);
+      // setTimeout(async () => {
+      const result = await axios.get(
+        `${API_URL}?query=${
+          searchInput.current.value
+        }&page=${page}&per_page=${Image_Per_Page}&client_id=${
+          import.meta.env.VITE_API_KEY
+        }`
+      );
+      setImages(result.data.results);
+      setTotalPages(result.data.total_pages);
+      // setLoading(false);
 
-        // console.log("result = > ", result.data);
-      }, 2000);
+      console.log("result = > ", result.data);
+      // }, 2000);
     } catch (error) {
       console.error("Error fetching images:", error);
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
@@ -61,7 +61,7 @@ const Home = () => {
     const searchQuery = searchInput.current.value || "cats";
     setQuery(searchQuery);
     setPage(1);
-    setLoading(true);
+    // setLoading(true);
 
     console.log(searchInput.current.value);
   };
@@ -109,7 +109,7 @@ const Home = () => {
         <Box
           className={classes.Boximages}
           sx={{
-            width: "80%",
+            width: "100%",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
             gap: "20px",
@@ -117,7 +117,7 @@ const Home = () => {
             justifyItems: "center",
           }}
         >
-          {loading
+          {/* {loading
             ? // Show skeleton loader while loading
               Array.from(new Array(Image_Per_Page)).map((_, index) => (
                 <Skeleton
@@ -127,17 +127,59 @@ const Home = () => {
                   key={index}
                 />
               ))
-            : images.map((image) => (
-                <a href={image.urls.small} key={image.id}>
-                  <img
-                    className={classes.images}
-                    key={image.id}
-                    src={image.urls.small}
-                    alt={image.description || "Unsplash Image"}
-                    style={{ width: "100%", height: "50vh" }}
-                  />
-                </a>
-              ))}
+            : */}
+
+          {images.map((Image) => (
+            <>
+              <Box
+                sx={{
+                  width: "100%",
+                  borderRadius: "15px",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <Box
+                  sx={{
+                    width: "100%",
+                  }}
+                >
+                  <a href={Image.urls.small} key={Image.id}>
+                    <img
+                      className={classes.images}
+                      key={Image.id}
+                      src={Image.urls.small}
+                      alt={Image.description || "Unsplash Image"}
+                      style={{ width: "100%", height: "50vh" }}
+                    />
+                  </a>
+                </Box>
+
+                <Box
+                  sx={{
+                    background: "white",
+                    width: "100%",
+                    display: "flex",
+                    // gap: "5px",
+                    alignItems: "center",
+                    justifyContent: "space-around",
+                    padding: "10px 0",
+                    borderRadius: "0 0 8px 8px",
+                  }}
+                >
+                  <Box>
+                    <Typography sx={{ color: "black", fontSize: "" }}>
+                      Price: {`$${Image.likes + 200}`}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Button>add to cart</Button>
+                  </Box>
+                </Box>
+              </Box>
+            </>
+          ))}
+          {/* <Box> */}
         </Box>
 
         <Box>
