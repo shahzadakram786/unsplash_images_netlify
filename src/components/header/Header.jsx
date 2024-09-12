@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaShoppingCart } from "react-icons/fa";
 
 const Header = () => {
   return (
@@ -35,7 +36,10 @@ const Header = () => {
               Unsplash Images
             </Typography>
           </Box>
-          <Box className="pagesTags" sx={{ display: "flex", gap: "20px" }}>
+          <Box
+            className="pagesTags"
+            sx={{ display: "flex", gap: "20px", alignItems: "center" }}
+          >
             <Typography
               variant="p"
               sx={{ fontSize: "18px" }}
@@ -60,6 +64,27 @@ const Header = () => {
             >
               Cart
             </Typography>
+            <Box sx={{ position: "relative" }}>
+              <FaShoppingCart
+                style={{ color: "aqua", fontSize: "1.5rem", cursor: "pointer" }}
+              />
+              <span
+                style={{
+                  fontSize: "10px",
+                  background: "#1976d2",
+                  borderRadius: "50%",
+                  color: "black",
+                  padding: "2px 6px",
+                  textAlign: "center",
+                  position: "absolute",
+                  top: "-5px",
+                  right: "-5px",
+                  zIndex: "10",
+                }}
+              >
+                <strong>0</strong>
+              </span>
+            </Box>
           </Box>
         </Box>
       </Box>
