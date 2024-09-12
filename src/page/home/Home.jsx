@@ -9,7 +9,7 @@ import Cards from "../../components/cards/Cards";
 const API_URL = "https://api.unsplash.com/search/photos";
 const Image_Per_Page = 12;
 
-const Home = () => {
+const Home = ({ cartCount, addToCart }) => {
   const classes = useStyle();
 
   const searchInput = useRef("");
@@ -107,7 +107,7 @@ const Home = () => {
           </button>
         </form>
 
-        <Cards images={images} />
+        <Cards images={images} addToCart={addToCart} />
 
         <Box>
           {page > 1 && (

@@ -2,7 +2,7 @@ import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import { useStyle } from "../../style";
 
-const Cards = ({ images }) => {
+const Cards = ({ images, addToCart }) => {
   const classes = useStyle();
 
   return (
@@ -74,7 +74,7 @@ const Cards = ({ images }) => {
                   </Typography>
                 </Box>
                 <Box>
-                  <Button>add to cart</Button>
+                  <Button onClick={addToCart}>add to cart</Button>
                 </Box>
               </Box>
             </Box>

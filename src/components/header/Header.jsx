@@ -3,12 +3,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 
-const Header = () => {
+const Header = ({ cartCount }) => {
   return (
     <>
       <Box
         className="container"
         sx={{
+          position: "sticky",
           padding: "2px",
           display: "flex",
           justifyContent: "center",
@@ -74,7 +75,7 @@ const Header = () => {
                   background: "#1976d2",
                   borderRadius: "50%",
                   color: "black",
-                  padding: "2px 6px",
+                  padding: "6px 6px",
                   textAlign: "center",
                   position: "absolute",
                   top: "-5px",
@@ -82,7 +83,7 @@ const Header = () => {
                   zIndex: "10",
                 }}
               >
-                <strong>0</strong>
+                <strong>{cartCount}</strong>
               </span>
             </Box>
           </Box>
