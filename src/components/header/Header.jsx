@@ -1,9 +1,11 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
 import { Link } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
-const Header = ({ cartCount }) => {
+const Header = () => {
+  const cartCount = useSelector((state) => state.cart.cartCount);
+
   return (
     <>
       <Box
