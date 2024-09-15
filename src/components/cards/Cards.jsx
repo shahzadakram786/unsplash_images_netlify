@@ -1,9 +1,11 @@
 import { Box, Button, Typography } from "@mui/material";
-import React from "react";
 import { useStyle } from "../../style";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/cart/cartSlice";
 
-const Cards = ({ images, addToCart }) => {
+const Cards = ({ images }) => {
   const classes = useStyle();
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -74,7 +76,9 @@ const Cards = ({ images, addToCart }) => {
                   </Typography>
                 </Box>
                 <Box>
-                  <Button onClick={addToCart}>add to cart</Button>
+                  <Button onClick={() => dispatch(addToCart())}>
+                    add to cart
+                  </Button>
                 </Box>
               </Box>
             </Box>
