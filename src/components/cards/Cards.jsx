@@ -1,11 +1,13 @@
-import { Box, Button, Typography } from "@mui/material";
+/* eslint-disable react/prop-types */
+import { Box } from "@mui/material";
 import { useStyle } from "../../style";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../../redux/cart/cartSlice";
+import CardsLayout from "../cardsLayout/CardsLayout";
+// import { useDispatch } from "react-redux";
+// import { addToCart } from "../../redux/cart/cartSlice";
 
 const Cards = ({ images }) => {
   const classes = useStyle();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   return (
     <>
@@ -31,60 +33,9 @@ const Cards = ({ images }) => {
                 />
               ))
             : */}
-
-        {images.map((Image) => (
-          <>
-            <Box
-              sx={{
-                width: "100%",
-                borderRadius: "15px",
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <Box
-                sx={{
-                  width: "100%",
-                }}
-              >
-                <a href={Image.urls.small} key={Image.id}>
-                  <img
-                    className={classes.images}
-                    key={Image.id}
-                    src={Image.urls.small}
-                    alt={Image.description || "Unsplash Image"}
-                    style={{ width: "100%", height: "50vh" }}
-                  />
-                </a>
-              </Box>
-
-              <Box
-                sx={{
-                  background: "white",
-                  width: "100%",
-                  display: "flex",
-                  // gap: "5px",
-                  alignItems: "center",
-                  justifyContent: "space-around",
-                  padding: "10px 0",
-                  borderRadius: "0 0 8px 8px",
-                }}
-              >
-                <Box>
-                  <Typography sx={{ color: "black", fontSize: "" }}>
-                    Price: {`$${Image.likes + 200}`}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Button onClick={() => dispatch(addToCart())}>
-                    add to cart
-                  </Button>
-                </Box>
-              </Box>
-            </Box>
-          </>
+        {images.map((image, index) => (
+          <CardsLayout image={image} key={index} />
         ))}
-        {/* <Box> */}
       </Box>
     </>
   );
