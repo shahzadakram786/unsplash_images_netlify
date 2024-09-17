@@ -25,23 +25,26 @@ const Home = ({ cartCount, addToCart }) => {
 
   const fetchImages = async (query) => {
     // setLoading(true);
+    if (!query) {
+      console.error("Search query is empty!");
+      return;
+    }
     try {
       // setTimeout(async () => {
       const result = await axios.get(
-        `${API_URL}?query=${
-          searchInput.current.value
-        }&page=${page}&per_page=${Image_Per_Page}&client_id=${
+        `${API_URL}?query=${query}&page=${page}&per_page=${Image_Per_Page}&client_id=${
           import.meta.env.VITE_API_KEY
         }`
       );
       setImages(result.data.results);
       setTotalPages(result.data.total_pages);
-      // setLoading(false);
 
-      console.log("result = > ", result.data);
+      // setLoading(false);
+      // console.log("result = > ", result.data);
       // }, 2000);
     } catch (error) {
       console.error("Error fetching images:", error);
+
       // setLoading(false);
     }
   };
@@ -59,7 +62,7 @@ const Home = ({ cartCount, addToCart }) => {
   const handleSearch = (event) => {
     event.preventDefault();
 
-    const searchQuery = searchInput.current.value || "cats";
+    const searchQuery = searchInput.current.value.trim() || "cats";
     setQuery(searchQuery);
     setPage(1);
     // setLoading(true);

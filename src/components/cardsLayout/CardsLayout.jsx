@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types */
 import { Box, Button, Typography } from "@mui/material";
 
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+// import { setImages } from "../../redux/cart/cartSlice";
+// import { useDispatch } from "react-redux";
 
-const CardsLayout = ({ image, id }) => {
-  console.log(image);
+const CardsLayout = ({ index, id, urls, description, likes, images }) => {
+  // const navigate = useNavigate();
 
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate(`/${image.id}`);
-  };
+  // const handleClick = () => {
+  //   navigate(`/${id}`);
+  // };
 
   return (
     <>
@@ -27,12 +27,12 @@ const CardsLayout = ({ image, id }) => {
             width: "100%",
           }}
         >
-          <a href={image.urls.small} key={Image.id}>
+          <a href={urls.small} key={id}>
             <img
               //   className={classes.images}
               key={id}
-              src={image.urls.small}
-              alt={image.description || "Unsplash Image"}
+              src={urls.small}
+              alt={description || "Unsplash Image"}
               style={{ width: "100%", height: "50vh" }}
             />
           </a>
@@ -52,12 +52,14 @@ const CardsLayout = ({ image, id }) => {
         >
           <Box>
             <Typography sx={{ color: "black", fontSize: "" }}>
-              Price: {`$${image.likes + 200}`}
+              Price: {`$${likes + 200}`}
             </Typography>
           </Box>
           <Box>
             {/* <Button onClick={() => dispatch(addToCart())}>addtolick</Button> */}
-            <Button onClick={handleClick}>Details</Button>
+            <NavLink to={`/${index}`}>
+              <Button>Details</Button>
+            </NavLink>
           </Box>
         </Box>
       </Box>

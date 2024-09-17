@@ -2,12 +2,17 @@
 import { Box } from "@mui/material";
 import { useStyle } from "../../style";
 import CardsLayout from "../cardsLayout/CardsLayout";
-// import { useDispatch } from "react-redux";
+import { setImages } from "../../redux/cart/cartSlice";
+import { useDispatch } from "react-redux";
 // import { addToCart } from "../../redux/cart/cartSlice";
 
 const Cards = ({ images }) => {
   const classes = useStyle();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+
+  dispatch(setImages(images));
+
+  // console.log(images);
 
   return (
     <>
@@ -34,7 +39,7 @@ const Cards = ({ images }) => {
               ))
             : */}
         {images.map((image, index) => (
-          <CardsLayout image={image} key={index} />
+          <CardsLayout {...image} key={index} index={index} images={images} />
         ))}
       </Box>
     </>
